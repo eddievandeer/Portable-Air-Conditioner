@@ -24,15 +24,24 @@
     export default defineComponent({
         name: 'Power',
         setup() {
+            let lock: boolean = false
+
             const store = useStore()
 
             const power: ComputedRef = computed(() => store.state.power)
 
             function acSwitch(): void {
-                if (store.state.power) {
-                    store.commit(POWER_OFF)
-                } else {
-                    store.commit(POWER_ON)
+                if (!lock) {
+                    lock = true
+                    if (store.state.power) {
+                        store.commit(POWER_OFF)
+                    } else {
+                        store.commit(POWER_ON)
+                    }
+
+                    setTimeout(() => {
+                        lock = false
+                    }, 3000)
                 }
             }
 
