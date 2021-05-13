@@ -1,7 +1,7 @@
 <template>
     <div class="windshield w-10/12 h-6 relative">
-        <div class="vertical-windshield w-full h-6 border border-gray-300 bg-white absolute z-10"
-            :class="[{'vertical-sweeping': verticalSweeping}, {'vertical-pause': power && !verticalSweeping}, power ? 'switch-on':'switch-off']">
+        <div class="vertical-windshield w-full h-6 border border-gray-300 bg-white absolute z-10" ref="vertical"
+            :class="[{'vertical-sweeping': verticalSweeping}, {'vertical-pause': power && !verticalSweeping}]">
         </div>
         <div class="w-full h-6 flex justify-around absolute top-0 left-0 transform-gpu">
             <div class="horizontal-windshield horizontal-sweeping w-2 h-full border border-gray-300 bg-white"
@@ -25,8 +25,10 @@
         computed,
         ComputedRef,
         defineComponent,
+        onMounted,
         ref,
         Ref,
+        watch
     } from 'vue'
 
     import {
@@ -37,16 +39,38 @@
     export default defineComponent({
         name: 'Windshield',
         setup() {
+            const vertical: Ref = ref()
             const store: Store < any > = useStore()
+
+            let timer: any
 
             const power: ComputedRef = computed(() => store.state.power),
                 verticalSweeping: ComputedRef = computed(() => store.state.verticalSweeping),
                 horizontalSweeping: ComputedRef = computed(() => store.state.horizontalSweeping)
 
+            watch(() => store.state.power, (newValue) => {
+                if (timer) clearTimeout(timer)
+
+                if (!newValue) {
+                    vertical.value.classList.remove('switch-on')
+                    timer = setTimeout(() => {
+                        vertical.value.classList.add('switch-off')
+                    }, 200)
+                } else {
+                    vertical.value.classList.add('switch-on')
+                    vertical.value.classList.remove('switch-off')
+                }
+            })
+
+            onMounted(() => {
+                vertical.value.classList.add('switch-off')
+            })
+
             return {
                 power,
                 verticalSweeping,
-                horizontalSweeping
+                horizontalSweeping,
+                vertical
             }
         }
     })
