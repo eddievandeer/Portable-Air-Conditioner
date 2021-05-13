@@ -1,8 +1,8 @@
 <template>
     <div>
-        <audio ref="open" src="/assets/ac-work.mp3" preload="auto"></audio>
-        <audio ref="work" src="/assets/air-extractor-fan.mp3" preload="auto"></audio>
-        <audio ref="di" src="/assets/di.mp3" preload="auto"></audio>
+        <audio ref="open" src="./assets/ac-work.mp3" preload="auto"></audio>
+        <audio ref="work" src="./assets/air-extractor-fan.mp3" preload="auto"></audio>
+        <audio ref="di" src="./assets/di.mp3" preload="auto"></audio>
     </div>
 </template>
 
