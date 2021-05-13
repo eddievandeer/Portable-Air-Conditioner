@@ -11,7 +11,8 @@
         ref,
         watch,
         defineComponent,
-        Ref
+        Ref,
+        onMounted
     } from 'vue'
     import {
         Store,
@@ -61,6 +62,11 @@
             const open: Ref = ref(),
                 work: Ref = ref(),
                 di: Ref = ref()
+
+            onMounted(() => {
+                open.value.volume = 0.1
+                work.value.volume = 0.2
+            })
 
             watch(() => store.state.power, (newValue: boolean) => {
                 playDi(di.value)
