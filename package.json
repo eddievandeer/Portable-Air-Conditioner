@@ -1,6 +1,7 @@
 {
   "name": "air-conditioner",
   "version": "0.0.0",
+  "homepage": "https://eddievandeer.github.io/Portable-Air-Conditioner",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
