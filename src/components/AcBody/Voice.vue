@@ -1,8 +1,13 @@
 <template>
     <div>
-        <audio ref="open" src="./assets/ac-work.mp3" preload="auto"></audio>
-        <audio ref="work" src="./assets/air-extractor-fan.mp3" preload="auto"></audio>
-        <audio ref="di" src="./assets/di.mp3" preload="auto"></audio>
+        <audio ref="open"
+            src="https://cdn.jsdelivr.net/gh/eddievandeer/Portable-Air-Conditioner/public/assets/ac-work.mp3"
+            preload="auto"></audio>
+        <audio ref="work"
+            src="https://cdn.jsdelivr.net/gh/eddievandeer/Portable-Air-Conditioner/public/assets/air-extractor-fan.mp3"
+            preload="auto"></audio>
+        <audio ref="di" src="https://cdn.jsdelivr.net/gh/eddievandeer/Portable-Air-Conditioner/public/assets/di.mp3"
+            preload="auto"></audio>
     </div>
 </template>
 
@@ -19,40 +24,11 @@
         useStore
     } from 'vuex'
 
-    let timeoutId: any;
-    let intervalId: any;
-
-    const noiseStartTime = 2;
-    const noiseDuration = 56;
-
-    function playDi(di: HTMLAudioElement) {
-        di.play()
-    }
-
-    function playOpenSound(open: HTMLAudioElement) {
-        open.currentTime = 0
-        open.play()
-    }
-
-    function playWorkSound(work: HTMLAudioElement) {
-        work.currentTime = 0
-        work.play()
-
-        timeoutId = setTimeout(() => {
-            intervalId = setInterval(() => {
-                work.currentTime = noiseStartTime
-            }, noiseDuration * 1000)
-        }, noiseStartTime * 1000)
-    }
-
-    function playTurnOffSound(open: HTMLAudioElement, work: HTMLAudioElement) {
-        if (timeoutId) clearTimeout(timeoutId)
-        if (intervalId) clearInterval(intervalId)
-
-        open.pause()
-
-        work.currentTime = noiseStartTime + noiseDuration
-    }
+    import {
+        playDi,
+        playOpenSound,
+        playTurnOffSound
+    } from '@utils/index'
 
     export default defineComponent({
         name: 'Voice',
@@ -71,21 +47,13 @@
             watch(() => store.state.power, (newValue: boolean) => {
                 playDi(di.value)
                 if (newValue) {
-                    playOpenSound(open.value)
-
-                    timeoutId = setTimeout(() => {
-                        playWorkSound(work.value);
-                    }, 8000);
+                    playOpenSound(open.value, work.value)
                 } else {
                     playTurnOffSound(open.value, work.value)
                 }
             })
 
-            watch(() => store.state.temperature, (newValue: number) => {
-                playDi(di.value)
-            })
-
-            watch(() => store.state.verticalSweeping, () => {
+            watch(() => store.state.temperature, () => {
                 playDi(di.value)
             })
 
