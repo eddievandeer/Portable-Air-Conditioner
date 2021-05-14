@@ -3,7 +3,7 @@
         <button
             class="w-12 h-12 text-3xl rounded-t-3xl flex justify-center items-center bg-gray-300 hover:bg-gray-200 active:outline-none focus:outline-none"
             @click="turnUp">
-            <i class="fa fa-caret-up transform -translate-y-1" aria-hidden="true"></i>
+            <i class="fa fa-caret-up" aria-hidden="true"></i>
         </button>
         <button
             class="w-12 h-12 text-3xl rounded-b-3xl flex justify-center items-center bg-gray-300 hover:bg-gray-200 active:outline-none focus:outline-none"
@@ -25,6 +25,7 @@
         TURN_UP,
         TURN_DOWN
     } from '../../store/mutation-types'
+
     export default defineComponent({
         name: 'TempControll',
         setup() {
