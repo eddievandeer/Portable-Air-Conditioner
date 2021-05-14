@@ -5,8 +5,13 @@ import {
     POWER_OFF,
     TURN_UP,
     TURN_DOWN,
-    CHANGE_WINDSHIELD
+    CHANGE_VERTICAL_WINDSHIELD,
+    STOP_VERTICAL_WINDSHIELD,
+    CHANGE_HORIZONTAL_WINDSHIELD,
 } from './mutation-types'
+
+const maxTemp = 32
+const minTemp = 16
 
 const store = createStore({
     state: {
@@ -25,21 +30,25 @@ const store = createStore({
         },
         [POWER_OFF](state): void {
             state.power = false
-            state.verticalSweeping = false
             state.horizontalSweeping = false
         },
         [TURN_UP](state): void {
-            if (state.power) {
+            if (state.power && state.temperature < maxTemp) {
                 state.temperature++
             }
         },
         [TURN_DOWN](state): void {
-            if (state.power) {
+            if (state.power && state.temperature > minTemp) {
                 state.temperature--
             }
         },
-        [CHANGE_WINDSHIELD](state): void {
+        [CHANGE_VERTICAL_WINDSHIELD](state): void {
             state.verticalSweeping = !state.verticalSweeping
+        },
+        [STOP_VERTICAL_WINDSHIELD](state) {
+            state.verticalSweeping = false
+        },
+        [CHANGE_HORIZONTAL_WINDSHIELD](state): void {
             state.horizontalSweeping = !state.horizontalSweeping
         }
     }
