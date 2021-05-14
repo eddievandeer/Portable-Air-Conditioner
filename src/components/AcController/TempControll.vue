@@ -24,7 +24,7 @@
     import {
         TURN_UP,
         TURN_DOWN
-    } from '../../store/mutation-types'
+    } from '@store/mutation-types'
 
     export default defineComponent({
         name: 'TempControll',

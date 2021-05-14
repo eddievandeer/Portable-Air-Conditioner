@@ -19,7 +19,7 @@
     import {
         POWER_ON,
         POWER_OFF
-    } from '../../store/mutation-types'
+    } from '@store/mutation-types'
 
     export default defineComponent({
         name: 'Power',
