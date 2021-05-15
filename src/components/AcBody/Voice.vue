@@ -25,7 +25,7 @@
     } from 'vuex'
 
     import {
-        playDi,
+        playAudio,
         playOpenSound,
         playTurnOffSound
     } from '@utils/index'
@@ -45,7 +45,7 @@
             })
 
             watch(() => store.state.power, (newValue: boolean) => {
-                playDi(di.value)
+                playAudio(di.value)
                 if (newValue) {
                     playOpenSound(open.value, work.value)
                 } else {
@@ -54,7 +54,7 @@
             })
 
             watch(() => store.state.temperature, () => {
-                playDi(di.value)
+                playAudio(di.value)
             })
 
             return {

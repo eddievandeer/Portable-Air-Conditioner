@@ -4,13 +4,13 @@ let intervalId: any;
 const noiseStartTime: number = 2;
 const noiseDuration: number = 56;
 
-export function playDi(di: HTMLAudioElement): void {
-    di.play()
+export function playAudio(audio: HTMLAudioElement): void {
+    audio.currentTime = 0
+    audio.play()
 }
 
 export function playOpenSound(open: HTMLAudioElement, work: HTMLAudioElement): void {
-    open.currentTime = 0
-    open.play()
+    playAudio(open)
 
     timeoutId = setTimeout(() => {
         playWorkSound(work);
@@ -18,8 +18,7 @@ export function playOpenSound(open: HTMLAudioElement, work: HTMLAudioElement): v
 }
 
 function playWorkSound(work: HTMLAudioElement): void {
-    work.currentTime = 0
-    work.play()
+    playAudio(work)
 
     timeoutId = setTimeout(() => {
         intervalId = setInterval(() => {
