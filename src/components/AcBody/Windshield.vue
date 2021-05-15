@@ -1,7 +1,7 @@
 <template>
     <div class="windshield w-10/12 h-6 relative">
         <div class="vertical-windshield w-full h-6 border border-gray-300 bg-white absolute z-10" ref="vertical"
-            :class="[{'vertical-sweeping': verticalSweeping}, {'vertical-pause': power && !verticalSweeping}]">
+            :class="[{'vertical-sweeping': verticalSweeping}, {'vertical-pause': power && !verticalSweeping}, {'switch-on': power}]">
         </div>
         <div class="w-full h-6 flex justify-around absolute top-0 left-0 transform-gpu">
             <div class="horizontal-windshield horizontal-sweeping w-2 h-full border border-gray-300 bg-white"
@@ -36,6 +36,10 @@
         useStore
     } from 'vuex'
 
+    import {
+        STOP_VERTICAL_WINDSHIELD
+    } from '@store/mutation-types'
+
     export default defineComponent({
         name: 'Windshield',
         setup() {
@@ -43,6 +47,13 @@
             const store: Store < any > = useStore()
 
             let timer: any
+
+            const endOffAnimation: Function = () => {
+                store.commit(STOP_VERTICAL_WINDSHIELD)
+                timer = setTimeout(() => {
+                    vertical.value.classList.add('switch-off')
+                })
+            }
 
             const power: ComputedRef = computed(() => store.state.power),
                 verticalSweeping: ComputedRef = computed(() => store.state.verticalSweeping),
@@ -52,12 +63,11 @@
                 if (timer) clearTimeout(timer)
 
                 if (!newValue) {
-                    vertical.value.classList.remove('switch-on')
-                    timer = setTimeout(() => {
-                        vertical.value.classList.add('switch-off')
-                    }, 200)
+                    // 触发关机
+                    vertical.value.addEventListener('animationiteration', endOffAnimation)
                 } else {
-                    vertical.value.classList.add('switch-on')
+                    // 触发开机
+                    vertical.value.removeEventListener('animationiteration', endOffAnimation)
                     vertical.value.classList.remove('switch-off')
                 }
             })
@@ -88,12 +98,12 @@
         transition: 5s all;
     }
 
-    .switch-on {
-        transform: rotateX(80deg);
+    .vertical-windshield.switch-off {
+        transform: rotateX(180deg);
     }
 
-    .switch-off {
-        transform: rotateX(180deg);
+    .switch-on {
+        transform: rotateX(80deg);
     }
 
     .horizontal-windshield {
@@ -113,16 +123,6 @@
     .vertical-pause,
     .horizontal-pause {
         animation-play-state: paused;
-    }
-
-    @keyframes switch-off {
-        from {
-            transform: rotateX(80deg);
-        }
-
-        to {
-            transform: rotateX(180deg);
-        }
     }
 
     @keyframes vertical-sweeping {
