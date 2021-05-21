@@ -1,12 +1,13 @@
 <template>
     <div>
-        <audio ref="open"
+        <audio id="open" ref="open"
             src="https://cdn.jsdelivr.net/gh/eddievandeer/Portable-Air-Conditioner/public/assets/ac-work.mp3"
             preload="auto"></audio>
-        <audio ref="work"
+        <audio id="work" ref="work"
             src="https://cdn.jsdelivr.net/gh/eddievandeer/Portable-Air-Conditioner/public/assets/air-extractor-fan.mp3"
             preload="auto"></audio>
-        <audio ref="di" src="https://cdn.jsdelivr.net/gh/eddievandeer/Portable-Air-Conditioner/public/assets/di.mp3"
+        <audio id="di" ref="di"
+            src="https://cdn.jsdelivr.net/gh/eddievandeer/Portable-Air-Conditioner/public/assets/di.mp3"
             preload="auto"></audio>
     </div>
 </template>
@@ -53,7 +54,7 @@
                 }
             })
 
-            watch(() => store.state.temperature, () => {
+            watch(() => [store.state.temperature, store.state.cording, store.state.heating], () => {
                 playAudio(di.value)
             })
 
