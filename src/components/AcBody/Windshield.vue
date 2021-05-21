@@ -1,7 +1,7 @@
 <template>
     <div class="windshield w-10/12 h-6 relative">
-        <div class="vertical-windshield w-full h-6 border border-gray-300 bg-white absolute z-10" ref="vertical"
-            :class="[{'vertical-sweeping': verticalSweeping}, {'vertical-pause': power && !verticalSweeping}, {'switch-on': power}]">
+        <div class="vertical-windshield vertical-sweeping w-full h-6 border border-gray-300 bg-white absolute z-10"
+            ref="vertical" :class="[{'vertical-pause': !verticalSweeping}, {'switch-on': power}]">
         </div>
         <div class="w-full h-6 flex justify-around absolute top-0 left-0 transform-gpu">
             <div class="horizontal-windshield horizontal-sweeping w-2 h-full border border-gray-300 bg-white"
@@ -37,7 +37,7 @@
     } from 'vuex'
 
     import {
-        STOP_VERTICAL_WINDSHIELD
+        CHANGE_VERTICAL_WINDSHIELD
     } from '@store/mutation-types'
 
     export default defineComponent({
@@ -49,7 +49,7 @@
             let timer: any
 
             const endOffAnimation: Function = () => {
-                store.commit(STOP_VERTICAL_WINDSHIELD)
+                vertical.value.classList.remove('vertical-sweeping')
                 timer = setTimeout(() => {
                     vertical.value.classList.add('switch-off')
                 })
@@ -64,9 +64,13 @@
 
                 if (!newValue) {
                     // 触发关机
+                    if (!verticalSweeping.value) {
+                        store.commit(CHANGE_VERTICAL_WINDSHIELD)
+                    }
                     vertical.value.addEventListener('animationiteration', endOffAnimation)
                 } else {
                     // 触发开机
+                    vertical.value.classList.add('vertical-sweeping')
                     vertical.value.removeEventListener('animationiteration', endOffAnimation)
                     vertical.value.classList.remove('switch-off')
                 }
