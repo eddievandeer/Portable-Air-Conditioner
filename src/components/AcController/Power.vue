@@ -1,9 +1,16 @@
 <template>
-    <button
-        class="switch w-12 h-12 text-2xl rounded-3xl flex justify-center items-center active:outline-none focus:outline-none"
-        :class="{'acitve' : power}" @click="acSwitch">
-        <i class="fa fa-power-off" aria-hidden="true"></i>
-    </button>
+    <div class="w-full h-auto flex justify-between items-end">
+        <button
+            class="switch w-12 h-12 text-2xl rounded-3xl flex justify-center items-center active:outline-none focus:outline-none"
+            :class="{'acitve' : power}" @click="acSwitch">
+            <i class="fa fa-power-off" aria-hidden="true"></i>
+        </button>
+        <button
+            class="w-12 h-8 text-base font-semibold rounded-xl flex justify-center items-center bg-yellow-500 hover:bg-yellow-400 active:outline-none focus:outline-none"
+            @click="acOptimum">
+            26℃
+        </button>
+    </div>
 </template>
 
 <script lang="ts">
@@ -18,7 +25,8 @@
 
     import {
         POWER_ON,
-        POWER_OFF
+        POWER_OFF,
+        OPTIMUM_TEMPERATURE
     } from '@store/mutation-types'
 
     export default defineComponent({
@@ -41,13 +49,18 @@
 
                     setTimeout(() => {
                         lock = false
-                    }, 3000)
+                    }, 2000)
                 }
+            }
+
+            function acOptimum(): void {
+                store.commit(OPTIMUM_TEMPERATURE)
             }
 
             return {
                 power,
-                acSwitch
+                acSwitch,
+                acOptimum
             }
         }
     })
