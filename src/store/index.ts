@@ -6,8 +6,9 @@ import {
     TURN_UP,
     TURN_DOWN,
     CHANGE_VERTICAL_WINDSHIELD,
-    STOP_VERTICAL_WINDSHIELD,
     CHANGE_HORIZONTAL_WINDSHIELD,
+    OPTIMUM_TEMPERATURE,
+    CHANGE_MODE
 } from './mutation-types'
 
 const maxTemp = 32
@@ -45,11 +46,15 @@ const store = createStore({
         [CHANGE_VERTICAL_WINDSHIELD](state): void {
             state.verticalSweeping = !state.verticalSweeping
         },
-        [STOP_VERTICAL_WINDSHIELD](state) {
-            state.verticalSweeping = false
-        },
         [CHANGE_HORIZONTAL_WINDSHIELD](state): void {
             state.horizontalSweeping = !state.horizontalSweeping
+        },
+        [OPTIMUM_TEMPERATURE](state): void {
+            state.temperature = 26
+        },
+        [CHANGE_MODE](state, mode: boolean): void {
+            state.cording = mode
+            state.heating = !mode
         }
     }
 })
