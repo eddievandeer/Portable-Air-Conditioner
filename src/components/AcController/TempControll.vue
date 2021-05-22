@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="divide-y">
         <button
             class="w-12 h-12 text-3xl rounded-t-3xl flex justify-center items-center bg-gray-300 hover:bg-gray-200 active:outline-none focus:outline-none"
             @click="turnUp">
