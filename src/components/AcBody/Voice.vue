@@ -54,7 +54,7 @@
                 }
             })
 
-            watch(() => [store.state.temperature, store.state.cording, store.state.heating], () => {
+            watch(() => [store.state.temperature, store.state.cooling, store.state.heating], () => {
                 playAudio(di.value)
             })
 

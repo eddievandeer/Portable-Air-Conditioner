@@ -1,7 +1,7 @@
 <template>
     <div class="w-24 h-6 border border-gray-200 rounded-md flex items-center justify-center">
         <i class=" h-4 fa fa-snowflake-o mx-0.5 text-blue-400" aria-hidden="true"
-            :class="{'active' : power&&cording}"></i>
+            :class="{'active' : power&&cooling}"></i>
         <i class="fa fa-sun-o mx-0.5 text-yellow-500" aria-hidden="true" :class="{'active' : power&&heating}"></i>
         <div class="w-2/3 h-full rounded flex justify-center items-center bg-gray-100">
             <span class="temperature text-2xl text-green-500" :class="{'active' : power}">
@@ -29,13 +29,13 @@
 
             const power: ComputedRef = computed(() => store.state.power),
                 temperature: ComputedRef = computed(() => store.state.temperature),
-                cording: ComputedRef = computed(() => store.state.cording),
+                cooling: ComputedRef = computed(() => store.state.cooling),
                 heating: ComputedRef = computed(() => store.state.heating)
 
             return {
                 power,
                 temperature,
-                cording,
+                cooling,
                 heating
             }
         }
