@@ -10,6 +10,8 @@ export const CHANGE_VERTICAL_WINDSHIELD: string = 'changeVerticalWindshield'
 
 export const CHANGE_HORIZONTAL_WINDSHIELD: string = 'changeHorizontalWindshield'
 
+export const INIT_AC = 'init'
+
 export const OPTIMUM_TEMPERATURE: string = 'optimumTemperature'
 
 export const CHANGE_MODE: string = 'changeMode'
