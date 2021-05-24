@@ -1,7 +1,7 @@
 <template>
     <div class="windshield w-10/12 h-6 relative">
-        <div class="vertical-windshield vertical-sweeping w-full h-6 border border-gray-300 bg-white absolute z-10"
-            ref="vertical" :class="[{'vertical-pause': !verticalSweeping}, {'switch-on': power}]">
+        <div class="vertical-windshield w-full h-6 border border-gray-300 bg-white absolute z-10" ref="vertical"
+            :class="start">
         </div>
         <div class="w-full h-6 flex justify-around absolute top-0 left-0 transform-gpu">
             <div class="horizontal-windshield horizontal-sweeping w-2 h-full border border-gray-300 bg-white"
@@ -26,6 +26,7 @@
         ComputedRef,
         defineComponent,
         onMounted,
+        reactive,
         ref,
         Ref,
         watch
@@ -47,30 +48,45 @@
             const store: Store < any > = useStore()
 
             let timer: any
+            let startTimer: any
+
+            const startAnimation: Function = () => {
+                startTimer = setTimeout(() => {
+                    start['vertical-sweeping'] = true
+                }, 5000)
+            }
 
             const endOffAnimation: Function = () => {
-                vertical.value.classList.remove('vertical-sweeping')
+                start['vertical-sweeping'] = false
                 timer = setTimeout(() => {
                     vertical.value.classList.add('switch-off')
                 })
             }
 
             const power: ComputedRef = computed(() => store.state.power),
-                verticalSweeping: ComputedRef = computed(() => store.state.verticalSweeping),
+                verticalPause: ComputedRef = computed(() => !store.state.verticalSweeping),
                 horizontalSweeping: ComputedRef = computed(() => store.state.horizontalSweeping)
+
+            const start = reactive({
+                'vertical-pause': verticalPause,
+                'switch-on': power,
+                'vertical-sweeping': false
+            })
 
             watch(() => store.state.power, (newValue) => {
                 if (timer) clearTimeout(timer)
+                if (startTimer) clearTimeout(startTimer)
 
                 if (!newValue) {
                     // 触发关机
-                    if (!verticalSweeping.value) {
+                    if (verticalPause.value) {
                         store.commit(CHANGE_VERTICAL_WINDSHIELD)
                     }
                     vertical.value.addEventListener('animationiteration', endOffAnimation)
                 } else {
                     // 触发开机
-                    vertical.value.classList.add('vertical-sweeping')
+                    // vertical.value.classList.add('vertical-sweeping')
+                    startAnimation()
                     vertical.value.removeEventListener('animationiteration', endOffAnimation)
                     vertical.value.classList.remove('switch-off')
                 }
@@ -81,10 +97,9 @@
             })
 
             return {
-                power,
-                verticalSweeping,
                 horizontalSweeping,
-                vertical
+                vertical,
+                start
             }
         }
     })
@@ -117,11 +132,11 @@
     }
 
     .vertical-sweeping {
-        animation: 8s 5s vertical-sweeping infinite ease-in-out;
+        animation: 8s vertical-sweeping infinite ease-in-out;
     }
 
     .horizontal-sweeping {
-        animation: 8s 5s horizontal-sweeping infinite;
+        animation: 8s horizontal-sweeping infinite;
     }
 
     .vertical-pause,
